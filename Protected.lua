@@ -7,7 +7,7 @@ local UI = UILib.CreateLib("Anime Fighter","Synapse")
 local VIM = game:GetService("VirtualInputManager")
 local VU = game:GetService("VirtualUser")
 local Auto = UI:NewTab("Auto Farm")
-
+local autocollect = false
 local AutoFarm = Auto:NewSection("Auto Farm Boss")
 local Graphic = UI:NewTab("Misc")
 local Misc = Graphic:NewSection("Misc")
@@ -93,6 +93,9 @@ end)
 local EggDropDown = AutoStar:NewDropdown("Star select","",eggData,function(value)
 	selectedEggMaxOpen = eggDisplayNameToNameLookUp[value]
 end)
+local AutoCollect = Misc:NewToggle("Auto Collect","",function(value)
+	autocollect = value
+end)
 local AntiAFKBut = Misc:NewButton("Anti AFK","",function()
 
 	cn = plr.Idled:Connect(function()
@@ -163,8 +166,19 @@ cn1 = game:GetService("RunService").RenderStepped:Connect(function()
 	
 
 	end
+end)
+cn3 = game:GetService("RunService").RenderStepped:Connect(function()
 	if multistar  then
 		game.ReplicatedStorage.Remote.AttemptMultiOpen:FireServer(selectedEggMaxOpen)
+	end
+end)
+cn4 = game:GetService("RunService").RenderStepped:Connect(function()
+	if autocollect then
+		for _, v in ipairs(game.Workspace.Effects:GetDescendants()) do
+			if v.Name == "Base" then
+				v.CFrame = plr.Character.HumanoidRootPart.CFrame
+			end
+		end
 	end
 end)
 UI.Close().Closing:Connect(function()
@@ -173,6 +187,12 @@ UI.Close().Closing:Connect(function()
 	end
 	if cn1 then 
 		cn1:Disconnect()
+	end
+	if cn3 then
+		cn3:Disconnect()
+	end
+	if cn4 then
+		cn4:Disconnect()
 	end
 end)
 
