@@ -160,10 +160,12 @@ cn1 = game:GetService("RunService").RenderStepped:Connect(function()
 				end
 			end
 		end
-	elseif multistar  then
-		game.ReplicatedStorage.Remote.AttemptMultiOpen:FireServer(selectedEggMaxOpen)
+	
 
 	end
+if multistar  then
+		game.ReplicatedStorage.Remote.AttemptMultiOpen:FireServer(selectedEggMaxOpen)
+end
 end)
 UI.Close().Closing:Connect(function()
 	if cn then
